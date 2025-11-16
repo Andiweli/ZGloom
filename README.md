@@ -7,7 +7,8 @@
 - Added game icon for .EXE
 
 # Comparison
-<img width="2000" height="764" alt="gloom-renderer" src="https://github.com/user-attachments/assets/951c4f9a-9c3a-4835-841e-608cf30e1ecb" />  
+
+<img width="2000" height="764" alt="screen1" src="https://github.com/user-attachments/assets/b4a6257f-c72f-4581-9a2c-28d241b90741" />
 
 <img width="2000" height="760" alt="screen2" src="https://github.com/user-attachments/assets/930e1f9f-0dea-470a-80f3-3b3e8ecf163c" />
 
