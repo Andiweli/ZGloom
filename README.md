@@ -1,7 +1,10 @@
 # ZGloom
 
 ## News
-- Fixed renderer from PSVITA SDL version.
+- Fixed renderer from PSVITA SDL version
+- Extended menu navigation (ESC, arrow-keys up/down and left/right
+- Added Overlays like Vignette, Film grain and Scanlines
+- Added game icon for .EXE
 
 # Comparison
 <img width="2000" height="764" alt="gloom-renderer" src="https://github.com/user-attachments/assets/951c4f9a-9c3a-4835-841e-608cf30e1ecb" />
