@@ -48,7 +48,7 @@ Comparison of the original renderer vs. the fixed ZGloom renderer:
 
 Menu options and visual overlays (vignette, film grain, scanlines):
 
-![ZGloom menu and overlays – vignette, film grain and scanlines](https://private-user-images.githubusercontent.com/11447150/514820570-930e1f9f-0dea-470a-80f3-3b3e8ecf163c.png)
+![ZGloom menu and overlays – vignette, film grain and scanlines](https://github.com/user-attachments/assets/930e1f9f-0dea-470a-80f3-3b3e8ecf163c)
 
 ---
 
