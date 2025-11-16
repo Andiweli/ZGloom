@@ -25,19 +25,22 @@ void TitleScreen::Render(SDL_Surface* src, SDL_Surface* dest, Font& font)
 	else
 	{
 		font.PrintMessage("GLOOM", 30, dest, 1);
+		font.PrintMessage("A BLACK MAGIC GAME", 40, dest, 1);
 
-		font.PrintMessage("A BLACK MAGIC GAME", 50, dest, 1);
+		font.PrintMessage("PROGRAMMED BY MARK SIBLY", 60, dest, 1);
+		font.PrintMessage("GRAPHICS BY THE BUTLER BROTHERS", 70, dest, 1);
+		font.PrintMessage("MUSIC BY KEV STANNARD", 80, dest, 1);
+		font.PrintMessage("AUDIO BY US", 90, dest, 1);
+		font.PrintMessage("PRODUCED BY US", 100, dest, 1);
+		font.PrintMessage("DESIGNED BY US", 110, dest, 1);
+		font.PrintMessage("GAME CODED IN DEVPAC2", 120, dest, 1);
+		font.PrintMessage("UTILITIES CODED IN BLITZ BASIC 2", 130, dest, 1);
+		font.PrintMessage("RENDERED IN DPAINT3 AND DPAINT4", 140, dest, 1);
+		font.PrintMessage("DECRUNCHING CODE BY THOMAS SCHWARZ", 150, dest, 1);
 
-		font.PrintMessage("PROGRAMMED BY MARK SIBLY", 70, dest, 1);
-		font.PrintMessage("GRAPHICS BY THE BUTLER BROTHERS", 80, dest, 1);
-		font.PrintMessage("MUSIC BY KEV STANNARD", 90, dest, 1);
-		font.PrintMessage("AUDIO BY US", 100, dest, 1);
-		font.PrintMessage("PRODUCED BY US", 110, dest, 1);
-		font.PrintMessage("DESIGNED BY US", 120, dest, 1);
-		font.PrintMessage("GAME CODED IN DEVPAC2", 130, dest, 1);
-		font.PrintMessage("UTILITIES CODED IN BLITZ BASIC 2", 140, dest, 1);
-		font.PrintMessage("RENDERED IN DPAINT3 AND DPAINT4", 150, dest, 1);
-		font.PrintMessage("DECRUNCHING CODE BY THOMAS SCHWARZ", 160, dest, 1);
+		font.PrintMessage("ABOUT THIS PORT", 170, dest, 1);
+		font.PrintMessage("PORTED BY SWIZPIG", 180, dest, 1);
+		font.PrintMessage("ADDITIONAL CODING BY ANDIWELI", 190, dest, 1);
 	}
 }
 
@@ -56,14 +59,19 @@ TitleScreen::TitleReturn TitleScreen::Update(SDL_Event& tevent, int& levelout)
 		{
 			switch (tevent.key.keysym.sym)
 			{
-			case SDLK_DOWN:
-				selection++;
-				if (selection == MAINENTRY_END) selection = MAINENTRY_END - 1;
-				break;
-			case SDLK_UP:
-				selection--;
-				if (selection == -1) selection = 0;
-				break;
+			// nav up and down and vice versa 
+    		case SDLK_DOWN:
+        		selection++;
+        		if (selection >= MAINENTRY_END)
+            		selection = 0;                        // von unten nach oben wrappen
+        		break;
+
+    		case SDLK_UP:
+        		selection--;
+        		if (selection < 0)
+            		selection = MAINENTRY_END - 1;       // von oben nach unten wrappen
+        		break;
+
 			case SDLK_SPACE:
 			case SDLK_RETURN:
 			case SDLK_LCTRL:
@@ -79,14 +87,25 @@ TitleScreen::TitleReturn TitleScreen::Update(SDL_Event& tevent, int& levelout)
 		{
 			switch (tevent.key.keysym.sym)
 			{
-			case SDLK_DOWN:
-				selection++;
-				if (selection == levelnames.size()) selection = levelnames.size() - 1;
-				break;
-			case SDLK_UP:
-				selection--;
-				if (selection == -1) selection = 0;
-				break;
+			// nav up and down and vice versa
+    		case SDLK_DOWN:
+        		selection++;
+        		if (selection >= (int)levelnames.size())
+            		selection = 0;                                   // am Ende wieder nach oben
+        		break;
+
+    		case SDLK_UP:
+        		selection--;
+        		if (selection < 0 && !levelnames.empty())
+            		selection = (int)levelnames.size() - 1;         // von oben ans Ende
+        		break;
+
+    		// NEU: ESC im Level-Select
+    		case SDLK_ESCAPE:
+        		status    = TITLESTATUS_MAIN;  // zurück ins Haupt-Titlescreen-Menü
+        		selection = 0;                 // optional: auf ersten Eintrag setzen
+        		break;
+
 			case SDLK_SPACE:
 			case SDLK_RETURN:
 			case SDLK_LCTRL:

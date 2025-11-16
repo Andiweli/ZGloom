@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="binresource.cpp" />
     <ClCompile Include="config.cpp" />
+    <ClCompile Include="ConfigOverlays.cpp" />
     <ClCompile Include="decrunchmania.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="gamelogic.cpp" />
@@ -20,6 +21,7 @@
     <ClCompile Include="gloommaths.cpp" />
     <ClCompile Include="hud.cpp" />
     <ClCompile Include="iffhandler.cpp" />
+    <ClCompile Include="MenuAdapters.cpp" />
     <ClCompile Include="menuscreen.cpp" />
     <ClCompile Include="monsterlogic.cpp" />
     <ClCompile Include="objectgraphics.cpp" />
@@ -28,11 +30,17 @@
     <ClCompile Include="script.cpp" />
     <ClCompile Include="soundhandler.cpp" />
     <ClCompile Include="titlescreen.cpp" />
+    <ClCompile Include="vita\FilmGrainOverlay.cpp" />
+    <ClCompile Include="vita\FrameLimiter.cpp" />
+    <ClCompile Include="vita\RendererHooks.cpp" />
+    <ClCompile Include="vita\ScanlineOverlay.cpp" />
+    <ClCompile Include="vita\VignetteOverlay.cpp" />
     <ClCompile Include="zgloom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="binresources.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="ConfigOverlays.h" />
     <ClInclude Include="crmfile.h" />
     <ClInclude Include="decrunchmania.h" />
     <ClInclude Include="font.h" />
@@ -41,6 +49,7 @@
     <ClInclude Include="gloommaths.h" />
     <ClInclude Include="hud.h" />
     <ClInclude Include="iffhandler.h" />
+    <ClInclude Include="MenuAdapters.h" />
     <ClInclude Include="menuscreen.h" />
     <ClInclude Include="monsterlogic.h" />
     <ClInclude Include="objectgraphics.h" />
@@ -49,6 +58,17 @@
     <ClInclude Include="script.h" />
     <ClInclude Include="soundhandler.h" />
     <ClInclude Include="titlescreen.h" />
+    <ClInclude Include="vita\FilmGrainOverlay.h" />
+    <ClInclude Include="vita\FrameLimiter.h" />
+    <ClInclude Include="vita\RendererHooks.h" />
+    <ClInclude Include="vita\ScanlineOverlay.h" />
+    <ClInclude Include="vita\VignetteOverlay.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="ZGloom.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ZGloom.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{58506240-C6E0-45EB-8632-F9157B7E97B5}</ProjectGuid>
@@ -59,13 +79,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -81,9 +101,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>c:\Development\VisualStudio\ZGloom\ZGloom\;$(IncludePath)</IncludePath>
+    <LibraryPath>c:\Development\VisualStudio\ZGloom\ZGloom\SDL2_mixer\lib\x86\;c:\Development\VisualStudio\ZGloom\ZGloom\SDL2\lib\x86\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>c:\Development\VisualStudio\ZGloom\ZGloom\;$(IncludePath)</IncludePath>
+    <LibraryPath>c:\Development\VisualStudio\ZGloom\ZGloom\SDL2_mixer\lib\x86\;c:\Development\VisualStudio\ZGloom\ZGloom\SDL2\lib\x86\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,12 +117,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\dev\sdlincludes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\dev\SDL2-2.0.10\lib\x86\sdl2.lib;C:\dev\SDL2-2.0.10\lib\x86\sdl2main.lib;C:\dev\SDL2_mixer-2.0.4\lib\x86\sdl2_mixer.lib;C:\dev\libxmp-master\libxmp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;libxmp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>c:\Development\VisualStudio\ZGloom\ZGloom\SDL2\lib\x86\;c:\Development\VisualStudio\ZGloom\ZGloom-master\xmp\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,7 +145,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>C:\dev\SDL2-2.0.10\lib\x86\sdl2.lib;C:\dev\SDL2-2.0.10\lib\x86\sdl2main.lib;C:\dev\SDL2_mixer-2.0.4\lib\x86\sdl2_mixer.lib;C:\dev\libxmp-master\libxmp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;libxmp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>c:\Development\VisualStudio\ZGloom\ZGloom\SDL2\lib\x86\;c:\Development\VisualStudio\ZGloom\ZGloom-master\xmp\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

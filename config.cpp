@@ -1,4 +1,5 @@
 #include "config.h"
+#include "ConfigOverlays.h"
 #include "objectgraphics.h"
 #include "soundhandler.h"
 #include <string>
@@ -610,6 +611,17 @@ namespace Config
 
 			file << ";rapidfire?\n";
 			file << "autofire " << (autofire ? 1 : 0) << "\n";
+
+			file << "\n;Display Effects (unified)\n";
+			file << "VIGNETTE=" << Config::GetVignetteEnabled() << "\n";
+			file << "V_STRENGTH=" << Config::GetVignetteStrength() << "\n";
+			file << "V_RADIUS=" << Config::GetVignetteRadius() << "\n";
+			file << "V_SOFTNESS=" << Config::GetVignetteSoftness() << "\n";
+			file << "V_WARMTH=" << Config::GetVignetteWarmth() << "\n";
+			file << "GRAIN=" << Config::GetFilmGrain() << "\n";
+			file << "GRAIN_I=" << Config::GetFilmGrainIntensity() << "\n";
+			file << "SCAN=" << Config::GetScanlines() << "\n";
+			file << "SCAN_I=" << Config::GetScanlineIntensity() << "\n";
 
 			file.close();
 		}

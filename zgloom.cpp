@@ -11,6 +11,7 @@
 #include "crmfile.h"
 #include "iffhandler.h"
 #include "renderer.h"
+#include "vita/RendererHooks.h"
 #include "objectgraphics.h"
 #include <iostream>
 #include "gamelogic.h"
@@ -180,6 +181,7 @@ int main(int argc, char* argv[])
 		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
 		return 1;
 	}
+	RendererHooks::init(ren, windowwidth, windowheight);
 
 	SDL_Texture* rendertex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, renderwidth, renderheight);
 	if (rendertex == nullptr)
@@ -285,6 +287,7 @@ int main(int argc, char* argv[])
 
 	while (notdone)
 	{
+		RendererHooks::beginFrame();
 		if ((state == STATE_PARSING) || (state == STATE_SPOOLING))
 		{
 			std::string scriptstring;
@@ -677,7 +680,7 @@ int main(int argc, char* argv[])
 			SDL_UpdateTexture(rendertex, NULL, render32->pixels, render32->pitch);
 			SDL_RenderClear(ren);
 			SDL_RenderCopy(ren, rendertex, NULL, NULL);
-			SDL_RenderPresent(ren);
+			RendererHooks::endFramePresent();
 		}
 	}
 
@@ -698,4 +701,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-

@@ -1,5 +1,17 @@
 #include "menuscreen.h"
 #include "config.h"
+#include "ConfigOverlays.h"
+#include "MenuAdapters.h"
+
+// ---- Vignette Warmth Bool Mapping (ON=WARM, OFF=COLD) ----------------------
+static int MenuGetVignetteWarmthBool() {
+    int v = MenuAdapters::GetWarmth01();
+    return (v >= 6) ? 1 : 0; // ON -> COLD (1), OFF -> WARM (0)
+}
+static void MenuSetVignetteWarmthBool(int on) {
+    if (on) { MenuAdapters::SetWarmth01(8); } else { MenuAdapters::SetWarmth01(3); }
+}
+
 
 void MenuScreen::Render(SDL_Surface* src, SDL_Surface* dest, Font& font)
 {
@@ -67,6 +79,7 @@ MenuScreen::MenuScreen()
 	mainmenu.push_back(MenuEntry("CONTROL OPTIONS", ACTION_SWITCHMENU, MENUSTATUS_CONTROLOPTIONS, nullptr, nullptr));
 	mainmenu.push_back(MenuEntry("SOUND OPTIONS", ACTION_SWITCHMENU, MENUSTATUS_SOUNDOPTIONS, nullptr, nullptr));
 	mainmenu.push_back(MenuEntry("DISPLAY OPTIONS", ACTION_SWITCHMENU, MENUSTATUS_DISPLAYOPTIONS, nullptr, nullptr));
+	// Halbzeile //
 	mainmenu.push_back(MenuEntry("QUIT TO TITLE", ACTION_RETURN, MENURET_QUIT, nullptr, nullptr));
 
 	soundmenu.push_back(MenuEntry("RETURN", ACTION_SWITCHMENU, MENUSTATUS_MAIN, nullptr, nullptr));
@@ -79,10 +92,22 @@ MenuScreen::MenuScreen()
 	controlmenu.push_back(MenuEntry("MOUSE SENSITIVITY: ", ACTION_INT, 10, Config::GetMouseSens, Config::SetMouseSens));
 
 	displaymenu.push_back(MenuEntry("RETURN", ACTION_SWITCHMENU, MENUSTATUS_MAIN, nullptr, nullptr));
-	displaymenu.push_back(MenuEntry("BLOOD SIZE: ", ACTION_INT, 5, Config::GetBlood, Config::SetBlood));
 	displaymenu.push_back(MenuEntry("FULLSCREEN: ", ACTION_BOOL, 0, Config::GetFullscreen, Config::SetFullscreen));
 	displaymenu.push_back(MenuEntry("MULTITHREAD RENDERER: ", ACTION_BOOL, 0, Config::GetMT, Config::SetMT));
-
+	// Halbzeile //
+	displaymenu.push_back(MenuEntry("BLOOD SIZE: ", ACTION_INT, 5, Config::GetBlood, Config::SetBlood));
+	// Halbzeile //
+	displaymenu.push_back(MenuEntry("ATMOSPHERIC VIGNETTE: ", ACTION_BOOL, 0, Config::GetVignetteEnabled, Config::SetVignetteEnabled));
+	displaymenu.push_back(MenuEntry("VIGNETTE STRENGTH: ", ACTION_INT, 6, Config::GetVignetteStrength, Config::SetVignetteStrength));
+	displaymenu.push_back(MenuEntry("VIGNETTE RADIUS: ", ACTION_INT, 6, Config::GetVignetteRadius, Config::SetVignetteRadius));
+	displaymenu.push_back(MenuEntry("VIGNETTE SOFTNESS: ", ACTION_INT, 6, Config::GetVignetteSoftness, Config::SetVignetteSoftness));
+	displaymenu.push_back(MenuEntry("VIGNETTE WARMTH: ", ACTION_BOOL, 0, MenuGetVignetteWarmthBool, MenuSetVignetteWarmthBool));
+	// Halbzeile //
+	displaymenu.push_back(MenuEntry("FILM GRAIN: ", ACTION_BOOL, 0, Config::GetFilmGrain, Config::SetFilmGrain));
+	displaymenu.push_back(MenuEntry("FILM GRAIN INTENSITY: ", ACTION_INT, 6, Config::GetFilmGrainIntensity, Config::SetFilmGrainIntensity));
+	// Halbzeile //
+	displaymenu.push_back(MenuEntry("SCANLINES: ", ACTION_BOOL, 0, Config::GetScanlines, Config::SetScanlines));
+	displaymenu.push_back(MenuEntry("SCANLINE INTENSITY: ", ACTION_INT, 6, Config::GetScanlineIntensity, Config::SetScanlineIntensity));
 }
 
 void MenuScreen::HandleKeyMenu(SDL_Keycode sym)
@@ -98,53 +123,94 @@ void MenuScreen::HandleKeyMenu(SDL_Keycode sym)
 
 MenuScreen::MenuReturn MenuScreen::HandleStandardMenu(SDL_Keycode sym, std::vector<MenuEntry>& menu)
 {
-	switch (sym)
-	{
-	case SDLK_DOWN:
-		selection++;
-		if (selection == menu.size()) selection = menu.size() - 1;
-		break;
-	case SDLK_UP:
-		selection--;
-		if (selection == -1) selection = 0;
-		break;
-	case SDLK_SPACE:
-	case SDLK_RETURN:
-	case SDLK_LCTRL:
-		switch (menu[selection].action)
-		{
-			case ACTION_BOOL:
-			{
-				menu[selection].setval(!menu[selection].getval());
-				break;
-			}
-			case ACTION_INT:
-			{
-				int x = (menu[selection].getval() + 1);
-				if (x >= menu[selection].arg) x = 0;
-				menu[selection].setval(x);
-				break;
-			}
-			case ACTION_SWITCHMENU:
-			{
-				status = (MENUSTATUS)menu[selection].arg;
-				selection = 0;
-				break;
-			}
-			case ACTION_RETURN:
-			{
-				return (MenuReturn)menu[selection].arg;
-				break;
-			}
-			default:
-				break;
-		}
+    switch (sym)
+    {
+    case SDLK_DOWN:
+        // Auswahl nach unten (mit Wrap-Around)
+        selection++;
+        if (selection >= (int)menu.size())
+            selection = 0;
+        break;
 
-	default:
-		break;
-	}
+    case SDLK_UP:
+        // Auswahl nach oben (mit Wrap-Around)
+        selection--;
+        if (selection < 0)
+            selection = (int)menu.size() - 1;
+        break;
 
-	return MENURET_NOTHING;
+    case SDLK_ESCAPE:
+        // ESC: im Hauptmenü zurück ins Spiel, sonst zurück ins Hauptmenü
+        if (status == MENUSTATUS_MAIN)
+        {
+            return MENURET_PLAY;
+        }
+        else
+        {
+            status    = MENUSTATUS_MAIN;
+            selection = 0;
+        }
+        break;
+
+    // RECHTS (wie Enter): nächster Wert
+    case SDLK_RIGHT:
+    // und auch Space/Enter/Strg wie bisher
+    case SDLK_SPACE:
+    case SDLK_RETURN:
+    case SDLK_LCTRL:
+        switch (menu[selection].action)
+        {
+        case ACTION_BOOL:
+        {
+            // Toggle ON/OFF
+            menu[selection].setval(!menu[selection].getval());
+            break;
+        }
+        case ACTION_INT:
+        {
+            // Wert +1 mit Wrap-Around 0..arg-1
+            int x = menu[selection].getval() + 1;
+            if (x >= menu[selection].arg)
+                x = 0;
+            menu[selection].setval(x);
+            break;
+        }
+        case ACTION_SWITCHMENU:
+        {
+            status    = (MENUSTATUS)menu[selection].arg;
+            selection = 0;
+            break;
+        }
+        case ACTION_RETURN:
+        {
+            return (MenuReturn)menu[selection].arg;
+        }
+        default:
+            break;
+        }
+        break;
+
+    // LINKS: vorheriger Wert (nur INT/BOOL)
+    case SDLK_LEFT:
+        if (menu[selection].action == ACTION_INT)
+        {
+            int x = menu[selection].getval() - 1;
+            if (x < 0)
+                x = menu[selection].arg - 1;
+            menu[selection].setval(x);
+        }
+        else if (menu[selection].action == ACTION_BOOL)
+        {
+            // BOOL auch mit Links/Rechts toggeln
+            menu[selection].setval(!menu[selection].getval());
+        }
+        break;
+
+    default:
+        break;
+    }
+
+    return MENURET_NOTHING;
 }
 
 MenuScreen::MenuReturn MenuScreen::Update(SDL_Event& tevent)
@@ -192,11 +258,20 @@ MenuScreen::MenuReturn MenuScreen::Update(SDL_Event& tevent)
 
 void MenuScreen::DisplayStandardMenu(std::vector<MenuEntry>& menu, bool flash, int scale, SDL_Surface* dest, Font& font)
 {
-	int starty = 100 * scale;
+	int starty = 70 * scale;
 	int yinc = 10 * scale;
 
 	for (size_t i = 0; i < menu.size(); i++)
 	{
+		// Halbzeile: grafischer Abstand vor bestimmten Einträgen
+		if (menu[i].name == "QUIT TO TITLE" ||
+		    menu[i].name == "BLOOD SIZE: " ||
+		    menu[i].name == "ATMOSPHERIC VIGNETTE: " ||
+		    menu[i].name == "FILM GRAIN: " ||
+		    menu[i].name == "SCANLINES: ")
+		{
+			starty += yinc / 2;
+		}
 		if (menu[i].action == ACTION_INT)
 		{
 			if (flash || (selection != i))
@@ -211,7 +286,14 @@ void MenuScreen::DisplayStandardMenu(std::vector<MenuEntry>& menu, bool flash, i
 			if (flash || (selection != i))
 			{
 				std::string menustring = menu[i].name;
-				menustring += menu[i].getval() ? "ON" : "OFF";
+				if (menustring.rfind("VIGNETTE WARMTH", 0) == 0)
+				{
+					menustring += menu[i].getval() ? "WARM" : "COLD";
+				}
+				else
+				{
+					menustring += menu[i].getval() ? "ON" : "OFF";
+				}
 				font.PrintMessage(menustring, starty, dest, scale);
 			}
 		}

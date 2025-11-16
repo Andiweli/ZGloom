@@ -145,6 +145,6 @@ namespace SoundHandler
 
 	void Play(int i)
 	{
-		Mix_PlayChannel(-1, sdlsounds[i], 0);
+		Mix_PlayChannelTimed(-1, sdlsounds[i], 0, -1);
 	}
 }
