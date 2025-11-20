@@ -82,10 +82,10 @@ void Shutdown() {
 void PlayLooping() {
     if (!s_ctx) Init();
     if (!s_ctx) return;
-    if (!s_hookInstalled) {
-        Mix_HookMusic(MusicHook, nullptr);
-        s_hookInstalled = true;
-    }
+    // Always (re)install our music hook, because other code (title/intermission XM)
+    // may have overridden it via Mix_HookMusic.
+    Mix_HookMusic(MusicHook, nullptr);
+    s_hookInstalled = true;
     if (!s_playing) {
         xmp_start_player(s_ctx, kSampleRate, 0);
         s_playing = true;

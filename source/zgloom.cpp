@@ -1067,6 +1067,8 @@ int main(int argc, char* argv[])
 						renderer.Init(render32, &gmap, &objgraphics);
 						logic.InitLevel(&gmap, &cam, &objgraphics);
 						state = STATE_PLAYING;
+						BGM::PlayLooping();
+						BGM::SetVolume9(AtmosphereVolume::Get());
 
 						if (haveingamemusic)
 						{
@@ -1307,9 +1309,7 @@ int main(int argc, char* argv[])
 
         // --- Sync Embedded Atmosphere BGM with game state (levels only) ---
         if ((state == STATE_PLAYING || state == STATE_MENU)) {
-            if (!haveingamemusic) {
-                BGM::PlayLooping(); // idempotent; keep playing in menu
-            }
+            BGM::PlayLooping(); // idempotent; keep playing in menu
         } else {
             BGM::Stop();
         }
