@@ -119,7 +119,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>c:\Development\VisualStudio\ZGloom\ZGloom\;$(IncludePath)</IncludePath>
-    <LibraryPath>c:\Development\VisualStudio\ZGloom\ZGloom\SDL2_mixer\lib\x86\;c:\Development\VisualStudio\ZGloom\ZGloom\SDL2\lib\x86\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>c:\Development\VisualStudio\ZGloom\ZGloom\sdl2\lib\x86\;c:\Development\VisualStudio\ZGloom\ZGloom\xmp\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

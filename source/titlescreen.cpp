@@ -29,21 +29,23 @@ void TitleScreen::Render(SDL_Surface* src, SDL_Surface* dest, Font& font)
 		font.PrintMessage("GLOOM", 30, dest, 1);
 		font.PrintMessage("A BLACK MAGIC GAME", 40, dest, 1);
 
-		font.PrintMessage("PROGRAMMED BY MARK SIBLY", 60, dest, 1);
-		font.PrintMessage("GRAPHICS BY THE BUTLER BROTHERS", 70, dest, 1);
-		font.PrintMessage("MUSIC BY KEV STANNARD", 80, dest, 1);
-		font.PrintMessage("AUDIO BY BLACK MAGIC", 90, dest, 1);
-		font.PrintMessage("PRODUCED BY BLACK MAGIC", 100, dest, 1);
+		font.PrintMessage("PROGRAMMED BY MARK SIBLY", 55, dest, 1);
+		font.PrintMessage("GRAPHICS BY THE BUTLER BROTHERS", 65, dest, 1);
+		font.PrintMessage("MUSIC BY KEV STANNARD", 75, dest, 1);
+		font.PrintMessage("AUDIO BY BLACK MAGIC", 85, dest, 1);
 		
-		font.PrintMessage("GAME CODED IN DEVPAC2", 115, dest, 1);
-		font.PrintMessage("UTILITIES CODED IN BLITZ BASIC 2", 125, dest, 1);
-		font.PrintMessage("RENDERED IN DPAINT3 AND DPAINT4", 135, dest, 1);
-		font.PrintMessage("DECRUNCHCODE BY THOMAS SCHWARZ", 145, dest, 1);
+		font.PrintMessage("GAME CODED IN DEVPAC2", 100, dest, 1);
+		font.PrintMessage("UTILITIES CODED IN BLITZ BASIC 2", 110, dest, 1);
+		font.PrintMessage("RENDERED IN DPAINT3 AND DPAINT4", 120, dest, 1);
+		font.PrintMessage("DECRUNCHCODE BY THOMAS SCHWARZ", 130, dest, 1);
 
-		font.PrintMessage("ABOUT THE X86 PORT", 165, dest, 1);
-		font.PrintMessage("GAME PORTED BY SWIZPIG", 180, dest, 1);
-		font.PrintMessage("ADDITIONAL CODE AND FIXES", 195, dest, 1);
-		font.PrintMessage("AND EFFECTS BY ANDIWELI", 205, dest, 1);
+		font.PrintMessage("GLOOM3 AND ZOMBIE MASSACRE", 145, dest, 1);
+		font.PrintMessage("BY ALPHA SOFTWARE", 155, dest, 1);
+
+		font.PrintMessage("ABOUT THE X86 PORT", 175, dest, 1);
+		font.PrintMessage("GAME PORTED BY SWIZPIG", 190, dest, 1);
+		font.PrintMessage("ADDITIONAL CODE AND FIXES", 205, dest, 1);
+		font.PrintMessage("AND EFFECTS BY ANDIWELI", 215, dest, 1);
 	}
 }
 
