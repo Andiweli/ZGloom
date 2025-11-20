@@ -153,8 +153,8 @@ For future versions, the following features and improvements are planned:
 - ~~**HUD rendering above post-processing overlays**~~  
   ~~Adjust the rendering order so the HUD is drawn on top of vignette / film grain / scanline effects, keeping it crisp and perfectly readable.~~
 
-- **Optional background / ambient sound layers**  
-  Add support for subtle ambient or background soundscapes to enhance atmosphere without changing core gameplay.
+~~- **Optional background / ambient sound layers**~~  
+  ~~Add support for subtle ambient or background soundscapes to enhance atmosphere without changing core gameplay.~~
 
 - **Further small enhancements and quality-of-life improvements**  
   Ongoing tweaks based on user feedback, including minor visual polish, configuration options and bug fixes where needed.
